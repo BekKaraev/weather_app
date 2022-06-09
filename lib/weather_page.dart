@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/citi_page.dart';
+import 'package:weather_app/constans.dart';
 
 import 'utils/weather_utils.dart';
 
@@ -23,7 +24,7 @@ class _WeatherPageState extends State<WeatherPage> {
   String _cityName = '';
   bool _isLoading = false;
 
-  get baseUrl => null;
+  
   @override
   void initState() {
     _showWeatherByLocation();
@@ -71,19 +72,19 @@ class _WeatherPageState extends State<WeatherPage> {
         _isLoading = true;
       });
       Uri uri = Uri.parse(
-          '$baseUrl?lat=${position.latitude}&lon=${position.longitude}&appid=d9881c15cae0cf285b12c3a2a36dff7a');
+         'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$apiKey');
       final response = await client.get(uri);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final body = response.body;
         final _data = jsonDecode(body) as Map<String, dynamic>;
-
+        
         final kelvin = _data['main']['temp'] as num;
 
-        _cityName = _data['name'];
+        // _cityName = _data['name'];
         _celcius = WeatherUtils.kelvinToCelcius(kelvin).toString();
         _description = WeatherUtils.getDescription(int.parse(_celcius));
-        _icons = WeatherUtils.getWeatherIcon(kelvin);
+        _icons = WeatherUtils.getWeatherIcon(kelvin.toInt());
         setState(() {
           _isLoading = false;
         });
@@ -104,18 +105,19 @@ class _WeatherPageState extends State<WeatherPage> {
     try {
       final client = http.Client();
 
-      Uri uri = Uri.parse('$baseUrl?q=$typedCityName&appid=d9881c15cae0cf285b12c3a2a36dff7a');
+     final url =
+          'https://api.openweathermap.org/data/2.5/weather?q=$typedCityName&appid=$apiKey';
+      Uri uri = Uri.parse(url);
       final response = await client.get(uri);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final body = response.body;
         log('body ===> $body');
-        // Worked untill this
         final _data = jsonDecode(body) as Map<String, dynamic>;
-        final kelvin = _data['main']['temp'] as num;
+        // final kelvin = _data['main']['temp'] as num;
         _cityName = _data['name'];
 
-        _celcius = WeatherUtils.kelvinToCelcius(kelvin) as String;
-        _icons = WeatherUtils.getWeatherIcon(kelvin);
+        //  _celcius = WeatherUtils.kelvinToCelcius(kelvin) as String;
+        //  _icons = WeatherUtils.getWeatherIcon(kelvin);
         _description = WeatherUtils.getDescription(int.parse(_celcius));
         setState(() {
           _isLoading = false;
@@ -136,12 +138,9 @@ class _WeatherPageState extends State<WeatherPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        leading:const IconButton(
-          onPressed: null,
-          icon:  Icon(
+        leading:const Icon(
             Icons.navigation,
             size: 60.0,
-          ),
         ),
         actions: [
           Padding(
