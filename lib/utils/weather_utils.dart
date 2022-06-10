@@ -25,13 +25,13 @@ class WeatherUtils {
 
   static String getDescription(int temp) {
     if (temp > 25) {
-      return 'It\'s 🍦 time';
+      return 'Бал муздак жесениз болот 🍦 time';
     } else if (temp > 20) {
-      return 'Time for shorts and 👕';
+      return 'Женил кийинип алсаныз болот 👕';
     } else if (temp < 10) {
-      return 'You\'ll need 🧣 and 🧤';
+      return 'жылуу кийининиз кун суук 🧣 жана 🧤';
     } else {
-      return 'Bring a 🧥 just in case';
+      return 'Жылуу 🧥 куртка кийип алыныз';
     }
   }
 }

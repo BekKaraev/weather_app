@@ -24,7 +24,6 @@ class _WeatherPageState extends State<WeatherPage> {
   String _cityName = '';
   bool _isLoading = false;
 
-  
   @override
   void initState() {
     _showWeatherByLocation();
@@ -72,16 +71,16 @@ class _WeatherPageState extends State<WeatherPage> {
         _isLoading = true;
       });
       Uri uri = Uri.parse(
-         'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$apiKey');
+          'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$apiKey');
       final response = await client.get(uri);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final body = response.body;
         final _data = jsonDecode(body) as Map<String, dynamic>;
-        
-        final kelvin = _data['main']['temp'] as num;
 
-        // _cityName = _data['name'];
+        final kelvin = _data['main']['temp'] as num;
+        log('main===>$_data');
+        _cityName = _data['name'];
         _celcius = WeatherUtils.kelvinToCelcius(kelvin).toString();
         _description = WeatherUtils.getDescription(int.parse(_celcius));
         _icons = WeatherUtils.getWeatherIcon(kelvin.toInt());
@@ -105,7 +104,7 @@ class _WeatherPageState extends State<WeatherPage> {
     try {
       final client = http.Client();
 
-     final url =
+      final url =
           'https://api.openweathermap.org/data/2.5/weather?q=$typedCityName&appid=$apiKey';
       Uri uri = Uri.parse(url);
       final response = await client.get(uri);
@@ -138,9 +137,9 @@ class _WeatherPageState extends State<WeatherPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        leading:const Icon(
-            Icons.navigation,
-            size: 60.0,
+        leading: const Icon(
+          Icons.navigation,
+          size: 60.0,
         ),
         actions: [
           Padding(
@@ -168,7 +167,7 @@ class _WeatherPageState extends State<WeatherPage> {
       ),
       body: Center(
         child: _isLoading
-            ?const CircularProgressIndicator(
+            ? const CircularProgressIndicator(
                 backgroundColor: Colors.blue,
                 color: Colors.teal,
               )
@@ -187,7 +186,7 @@ class _WeatherPageState extends State<WeatherPage> {
                       _celcius.isEmpty
                           ? '$_celcius \u00B0 🌦'
                           : '$_celcius  \u00B0 $_icons',
-                      style:const TextStyle(
+                      style: const TextStyle(
                         fontSize: 100.0,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -196,7 +195,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     Text(
                       _cityName,
                       textAlign: TextAlign.center,
-                      style:const TextStyle(
+                      style: const TextStyle(
                         fontSize: 50.0,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -208,7 +207,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     Text(
                       _description,
                       textAlign: TextAlign.center,
-                      style:const TextStyle(
+                      style: const TextStyle(
                         fontSize: 60.0,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
