@@ -1,9 +1,9 @@
-class WeatherUtils {
-  static int kelvinToCelcius(double kelvin) {
-    return (kelvin - 273.15).round();
+class Weatherutils {
+  static String kelvinToCelcius(double kelvin) {
+    return (kelvin - 273.15).round().toString();
   }
 
-  static String getWeatherIcon(int kelvin) {
+  static String getWeatherIcon(double kelvin) {
     if (kelvin < 300) {
       return '☁';
     } else if (kelvin < 400) {
@@ -23,10 +23,10 @@ class WeatherUtils {
     }
   }
 
-  static String getDescription(int temp) {
+  static String getDescription(double temp) {
     if (temp > 25) {
       return 'Бал муздак жесениз болот 🍦 time';
-    } else if (temp > 20) {
+    } else if (temp < 25) {
       return 'Женил кийинип алсаныз болот 👕';
     } else if (temp < 10) {
       return 'жылуу кийининиз кун суук 🧣 жана 🧤';

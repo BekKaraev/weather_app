@@ -76,14 +76,15 @@ class _WeatherPageState extends State<WeatherPage> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final body = response.body;
+        //  log('body ===> $body');
         final _data = jsonDecode(body) as Map<String, dynamic>;
 
         final kelvin = _data['main']['temp'] as num;
         log('main===>$_data');
         _cityName = _data['name'];
-        _celcius = WeatherUtils.kelvinToCelcius(kelvin).toString();
-        _description = WeatherUtils.getDescription(int.parse(_celcius));
-        _icons = WeatherUtils.getWeatherIcon(kelvin.toInt());
+        _celcius = Weatherutils.kelvinToCelcius(kelvin).toString();
+        _description = Weatherutils.getDescription(double.parse(_celcius));
+        _icons = Weatherutils.getWeatherIcon(kelvin.toDouble());
         setState(() {
           _isLoading = false;
         });
@@ -112,12 +113,12 @@ class _WeatherPageState extends State<WeatherPage> {
         final body = response.body;
         log('body ===> $body');
         final _data = jsonDecode(body) as Map<String, dynamic>;
-        // final kelvin = _data['main']['temp'] as num;
+        final kelvin = _data['main']['temp'] as num;
         _cityName = _data['name'];
 
-        //  _celcius = WeatherUtils.kelvinToCelcius(kelvin) as String;
-        //  _icons = WeatherUtils.getWeatherIcon(kelvin);
-        _description = WeatherUtils.getDescription(int.parse(_celcius));
+        _celcius = Weatherutils.kelvinToCelcius(kelvin).toString();
+        _icons = Weatherutils.getWeatherIcon(kelvin).toString();
+        _description = Weatherutils.getDescription(double.parse(_celcius));
         setState(() {
           _isLoading = false;
         });
